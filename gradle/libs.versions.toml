@@ -9,6 +9,7 @@ androidx-activity = '1.4.0'
 androidx-compose-material = '1.1.1'
 androidx-lifecycle-livedata = '2.4.1'
 androidx-room = '2.4.2'
+coil = '2.1.0'
 
 [libraries]
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
@@ -32,6 +33,8 @@ dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = 
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 [bundles]
 compose = ["compose-ui", "compose-material"]

@@ -86,7 +86,10 @@ fun ProductItemContent(
 @Composable
 private fun ProductPlaceholder() {
     Box(
-        modifier = Modifier.background(Color.Gray).fillMaxWidth().aspectRatio(1f),
+        modifier = Modifier
+            .background(Color.Gray.copy(alpha = 0.5f))
+            .fillMaxWidth()
+            .aspectRatio(1f),
         contentAlignment = Alignment.Center
     ) {
         Image(

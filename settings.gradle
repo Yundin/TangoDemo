@@ -26,4 +26,6 @@ include ':datasource'
 project(':datasource').projectDir = new File(rootDir, 'sources/base/datasource')
 include ':navigation'
 project(':navigation').projectDir = new File(rootDir, 'sources/base/navigation')
+include ':productlist'
+project(':productlist').projectDir = new File(rootDir, 'sources/features/productlist')
 

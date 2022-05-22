@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/sources/base/datasource" />
             <option value="$PROJECT_DIR$/sources/base/designsystem" />
             <option value="$PROJECT_DIR$/sources/base/navigation" />
+            <option value="$PROJECT_DIR$/sources/features/productlist" />
           </set>
         </option>
       </GradleProjectSettings>

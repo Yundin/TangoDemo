@@ -6,6 +6,7 @@
       <module name="TangoDemo.core" target="11" />
       <module name="TangoDemo.datasource" target="11" />
       <module name="TangoDemo.designsystem" target="11" />
+      <module name="TangoDemo.productlist" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

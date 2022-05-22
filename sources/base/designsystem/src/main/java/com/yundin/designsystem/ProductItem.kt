@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
@@ -34,6 +35,7 @@ fun ProductItem(
         price = price.setScale(2).toPlainString()
     ) {
         SubcomposeAsyncImage(
+            modifier = Modifier.fillMaxWidth().aspectRatio(1f),
             model = imageUrl,
             contentDescription = null
         ) {
@@ -54,18 +56,23 @@ fun ProductItemContent(
     price: String,
     imageSlot: @Composable (ColumnScope) -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        elevation = 3.dp
+    ) {
         Column {
             imageSlot(this)
             Column(Modifier.padding(16.dp)) {
                 Text(
-                    text = name,
-                    style = MaterialTheme.typography.h6,
+                    text = name + "\n".repeat(3), // ensure we have 4 lines
+                    style = MaterialTheme.typography.h6.copy(fontSize = 16.sp),
+                    maxLines = 4
                 )
                 Text(
                     text = manufacturer,
                     style = MaterialTheme.typography.subtitle1,
-                    modifier = Modifier.alpha(0.5f)
+                    modifier = Modifier.alpha(0.5f),
+                    maxLines = 1
                 )
                 Text(
                     text = price,

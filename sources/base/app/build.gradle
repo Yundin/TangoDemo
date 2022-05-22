@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -50,9 +51,12 @@ dependencies {
     implementation project(':core')
     implementation project(':datasource')
     implementation project(':navigation')
+    implementation project(':productlist')
     implementation project(':designsystem')
 
     implementation libs.androidx.activity.compose
     implementation libs.bundles.compose
     implementation libs.navigation
+    implementation libs.dagger.runtime
+    kapt libs.dagger.compiler
 }

@@ -12,6 +12,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/sources/base/app" />
+            <option value="$PROJECT_DIR$/sources/base/core" />
+            <option value="$PROJECT_DIR$/sources/base/datasource" />
+            <option value="$PROJECT_DIR$/sources/base/designsystem" />
+            <option value="$PROJECT_DIR$/sources/base/navigation" />
           </set>
         </option>
       </GradleProjectSettings>

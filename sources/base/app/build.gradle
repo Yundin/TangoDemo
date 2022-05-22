@@ -47,6 +47,10 @@ android {
 }
 
 dependencies {
+    implementation project(':core')
+    implementation project(':datasource')
+    implementation project(':navigation')
+    implementation project(':designsystem')
 
     implementation libs.androidx.activity.compose
     implementation libs.bundles.compose

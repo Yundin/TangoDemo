@@ -1,4 +1,4 @@
-package com.yundin.tangodemo.ui.theme
+package com.yundin.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

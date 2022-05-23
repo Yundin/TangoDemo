@@ -42,7 +42,6 @@ internal class ProductListViewModel @Inject constructor(
                 .flatMapLatest { searchQuery ->
                     proceedSearchInput(searchQuery)
                 }
-                .retry()
                 .collect {
                     _uiState.value = it
                 }
@@ -58,25 +57,18 @@ internal class ProductListViewModel @Inject constructor(
             }
         return dataFlow
             .map { products ->
-                uiState.value!!.copy(
-                    products = products,
-                    loadingState = LoadingState.Idle
-                )
+                uiState.value!!.loaded(products)
             }
             .catch {
                 emit(
-                    uiState.value!!.copy(
-                        loadingState = LoadingState.Error(
-                            resourceProvider.getString(R.string.loading_error)
-                        )
+                    uiState.value!!.withError(
+                        resourceProvider.getString(R.string.loading_error)
                     )
                 )
             }
             .onStart {
                 emit(
-                    uiState.value!!.copy(
-                        loadingState = LoadingState.Loading
-                    )
+                    uiState.value!!.loading()
                 )
             }
     }
@@ -96,4 +88,21 @@ internal sealed class LoadingState {
     object Idle : LoadingState()
     object Loading : LoadingState()
     data class Error(val message: String) : LoadingState()
+}
+
+private fun UiState.loading(): UiState {
+    return copy(loadingState = LoadingState.Loading)
+}
+
+private fun UiState.loaded(products: List<Product>): UiState {
+    return copy(
+        products = products,
+        loadingState = LoadingState.Idle
+    )
+}
+
+private fun UiState.withError(message: String): UiState {
+    return copy(
+        loadingState = LoadingState.Error(message)
+    )
 }

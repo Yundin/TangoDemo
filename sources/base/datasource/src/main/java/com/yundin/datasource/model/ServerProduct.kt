@@ -14,14 +14,7 @@ data class ServerProduct(
     val images: List<ServerImage>,
     @SerializedName("manufacturer")
     val manufacturer: ServerManufacturer
-) {
-    fun toDomain(): Product = Product(
-        name = productName,
-        imageUrl = images.first().imageUrl,
-        manufacturerName = manufacturer.name,
-        price = grossPrice.toBigDecimal()
-    )
-}
+)
 
 data class ServerImage(
     @SerializedName("image")
@@ -35,4 +28,11 @@ data class ServerManufacturer(
     val slug: String,
     @SerializedName("name")
     val name: String
+)
+
+fun ServerProduct.toDomain(): Product = Product(
+    name = productName,
+    imageUrl = images.first().imageUrl,
+    manufacturerName = manufacturer.name,
+    price = grossPrice.toBigDecimal()
 )

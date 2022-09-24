@@ -1,6 +1,7 @@
 package com.yundin.productlist
 
-import androidx.lifecycle.*
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yundin.core.model.Product
 import com.yundin.core.repository.ProductsRepository
 import com.yundin.core.utils.ResourceProvider
@@ -17,8 +18,8 @@ internal class ProductListViewModel @Inject constructor(
     private val productsRepository: ProductsRepository,
     private val resourceProvider: ResourceProvider
 ) : ViewModel() {
-    private val _uiState: MutableLiveData<UiState> = MutableLiveData(UiState())
-    val uiState: LiveData<UiState> = _uiState
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
+    val uiState: StateFlow<UiState> = _uiState
     private var productsJob: Job? = null
 
     init {
@@ -26,7 +27,7 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     fun onInputChange(text: String) {
-        _uiState.value = _uiState.value!!.copy(searchText = text)
+        _uiState.value = _uiState.value.copy(searchText = text)
     }
 
     fun onRetryClick() {
@@ -36,8 +37,7 @@ internal class ProductListViewModel @Inject constructor(
     private fun observeSearchInput() {
         productsJob?.cancel()
         productsJob = viewModelScope.launch {
-            uiState.asFlow()
-                .map { it.searchText }
+            uiState.map { it.searchText }
                 .distinctUntilChanged()
                 .debounce(SEARCH_DEBOUNCE_DELAY)
                 .flatMapLatest { searchQuery ->
@@ -59,15 +59,15 @@ internal class ProductListViewModel @Inject constructor(
         }
             .map { products ->
                 when(products) {
-                    is Result.Success -> uiState.value!!.loaded(products.result)
-                    is Result.Error -> uiState.value!!.withError(
+                    is Result.Success -> uiState.value.loaded(products.result)
+                    is Result.Error -> uiState.value.withError(
                         resourceProvider.getString(R.string.loading_error)
                     )
                 }
             }
             .onStart {
                 emit(
-                    uiState.value!!.loading()
+                    uiState.value.loading()
                 )
             }
     }

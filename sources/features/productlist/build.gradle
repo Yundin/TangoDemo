@@ -37,9 +37,8 @@ dependencies {
     implementation project(':designsystem')
 
     implementation libs.bundles.compose
-    implementation libs.compose.runtime.livedata
+    implementation libs.androidx.lifecycle
     implementation libs.viewmodel.compose
-    implementation libs.androidx.lifecycle.livedata
 
     implementation libs.dagger.runtime
     kapt libs.dagger.compiler

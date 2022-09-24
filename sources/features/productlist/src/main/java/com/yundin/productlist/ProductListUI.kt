@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yundin.core.App
 import com.yundin.core.utils.daggerViewModelFactory
+import com.yundin.core.utils.toPlainString
 import com.yundin.designsystem.LoadingFailedItem
 import com.yundin.designsystem.ProductItem
 import com.yundin.designsystem.ProgressBarItem
@@ -72,7 +73,10 @@ private fun LoadingStateItem(
             ProgressBarItem()
         }
         if (it is LoadingState.Error) {
-            LoadingFailedItem(onRetryClick = onRetryClick)
+            LoadingFailedItem(
+                errorText = it.message.toPlainString(LocalContext.current),
+                onRetryClick = onRetryClick
+            )
         }
     }
 }

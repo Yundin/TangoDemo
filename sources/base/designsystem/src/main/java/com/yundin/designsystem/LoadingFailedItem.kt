@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingFailedItem(onRetryClick: () -> Unit) {
+fun LoadingFailedItem(errorText: String, onRetryClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -21,7 +21,7 @@ fun LoadingFailedItem(onRetryClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = stringResource(R.string.loading_failed),
+            text = errorText,
             style = MaterialTheme.typography.body1
         )
         Button(onClick = onRetryClick) {

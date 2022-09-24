@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yundin.core.model.Product
 import com.yundin.core.repository.ProductsRepository
-import com.yundin.core.utils.ResourceProvider
+import com.yundin.core.utils.NativeText
 import com.yundin.core.utils.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -16,7 +16,6 @@ import javax.inject.Inject
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 internal class ProductListViewModel @Inject constructor(
     private val productsRepository: ProductsRepository,
-    private val resourceProvider: ResourceProvider
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
@@ -61,7 +60,7 @@ internal class ProductListViewModel @Inject constructor(
                 when(products) {
                     is Result.Success -> uiState.value.loaded(products.result)
                     is Result.Error -> uiState.value.withError(
-                        resourceProvider.getString(R.string.loading_error)
+                        NativeText.Resource(R.string.loading_error)
                     )
                 }
             }
@@ -86,7 +85,7 @@ internal data class UiState(
 internal sealed class LoadingState {
     object Idle : LoadingState()
     object Loading : LoadingState()
-    data class Error(val message: String) : LoadingState()
+    data class Error(val message: NativeText) : LoadingState()
 }
 
 private fun UiState.loading(): UiState {
@@ -100,7 +99,7 @@ private fun UiState.loaded(products: List<Product>): UiState {
     )
 }
 
-private fun UiState.withError(message: String): UiState {
+private fun UiState.withError(message: NativeText): UiState {
     return copy(
         loadingState = LoadingState.Error(message)
     )

@@ -6,9 +6,10 @@ import com.yundin.core.model.Product
 import com.yundin.core.repository.ProductsRepository
 import com.yundin.core.utils.NativeText
 import com.yundin.core.utils.Result
+import com.yundin.core.utils.RetryTrigger
+import com.yundin.core.utils.retryable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +20,7 @@ internal class ProductListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
-    private var productsJob: Job? = null
+    private val productsRetryTrigger = RetryTrigger()
 
     init {
         observeSearchInput()
@@ -30,45 +31,47 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     fun onRetryClick() {
-        observeSearchInput()
+        productsRetryTrigger.retry()
     }
 
     private fun observeSearchInput() {
-        productsJob?.cancel()
-        productsJob = viewModelScope.launch {
+        viewModelScope.launch {
             uiState.map { it.searchText }
                 .distinctUntilChanged()
                 .debounce(SEARCH_DEBOUNCE_DELAY)
                 .flatMapLatest { searchQuery ->
-                    proceedSearchInput(searchQuery)
+                    handleNewSearchInput(searchQuery)
                 }
+                .retryable(productsRetryTrigger)
                 .collect {
                     _uiState.value = it
                 }
         }
     }
 
-    private fun proceedSearchInput(searchText: String): Flow<UiState> {
+    private fun handleNewSearchInput(searchText: String): Flow<UiState> {
         return flow {
-            if (searchText.isBlank()) {
-                emit(productsRepository.getAllProducts())
-            } else {
-                emit(productsRepository.searchProduct(searchText))
-            }
+            emit(getProducts(searchText))
         }
-            .map { products ->
-                when(products) {
-                    is Result.Success -> uiState.value.loaded(products.result)
+            .map { productsResult ->
+                when(productsResult) {
+                    is Result.Success -> uiState.value.loaded(productsResult.result)
                     is Result.Error -> uiState.value.withError(
                         NativeText.Resource(R.string.loading_error)
                     )
                 }
             }
             .onStart {
-                emit(
-                    uiState.value.loading()
-                )
+                emit(uiState.value.loading())
             }
+    }
+
+    private suspend fun getProducts(searchText: String): Result<List<Product>, Throwable> {
+        return if (searchText.isBlank()) {
+            productsRepository.getAllProducts()
+        } else {
+            productsRepository.searchProduct(searchText)
+        }
     }
 
     companion object {

@@ -1,11 +1,11 @@
 package com.yundin.core.repository
 
 import com.yundin.core.model.Product
-import kotlinx.coroutines.flow.Flow
+import com.yundin.core.utils.Result
 
 interface ProductsRepository {
 
-    val products: Flow<List<Product>>
+    suspend fun getAllProducts(): Result<List<Product>, Throwable>
 
-    fun searchProduct(searchQuery: String): Flow<List<Product>>
+    suspend fun searchProduct(searchQuery: String): Result<List<Product>, Throwable>
 }

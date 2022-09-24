@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.yundin.core.model.Product
 import com.yundin.core.repository.ProductsRepository
 import com.yundin.core.utils.ResourceProvider
+import com.yundin.core.utils.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -49,22 +50,20 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     private fun proceedSearchInput(searchText: String): Flow<UiState> {
-        val dataFlow =
+        return flow {
             if (searchText.isBlank()) {
-                productsRepository.products
+                emit(productsRepository.getAllProducts())
             } else {
-                productsRepository.searchProduct(searchText)
+                emit(productsRepository.searchProduct(searchText))
             }
-        return dataFlow
+        }
             .map { products ->
-                uiState.value!!.loaded(products)
-            }
-            .catch {
-                emit(
-                    uiState.value!!.withError(
+                when(products) {
+                    is Result.Success -> uiState.value!!.loaded(products.result)
+                    is Result.Error -> uiState.value!!.withError(
                         resourceProvider.getString(R.string.loading_error)
                     )
-                )
+                }
             }
             .onStart {
                 emit(

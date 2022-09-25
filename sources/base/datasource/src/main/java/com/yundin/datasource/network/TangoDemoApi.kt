@@ -1,4 +1,4 @@
-package com.yundin.datasource
+package com.yundin.datasource.network
 
 import com.yundin.datasource.model.ServerProduct
 import retrofit2.http.GET

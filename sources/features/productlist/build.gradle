@@ -42,4 +42,7 @@ dependencies {
 
     implementation libs.dagger.runtime
     kapt libs.dagger.compiler
+
+    testImplementation libs.junit
+    testImplementation libs.coroutines.test
 }

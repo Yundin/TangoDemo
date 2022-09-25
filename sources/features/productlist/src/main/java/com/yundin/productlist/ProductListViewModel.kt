@@ -43,10 +43,18 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     private fun observeSearchInput() {
+        var firstItemPassed = false
         viewModelScope.launch {
             uiState.map { it.searchText }
                 .distinctUntilChanged()
-                .debounce(SEARCH_DEBOUNCE_DELAY)
+                .debounce {
+                    if (firstItemPassed) {
+                        SEARCH_DEBOUNCE_DELAY
+                    } else {
+                        firstItemPassed = true
+                        0L
+                    }
+                }
                 .flatMapLatest { searchQuery ->
                     handleNewSearchInput(searchQuery)
                 }
@@ -88,33 +96,4 @@ internal class ProductListViewModel @Inject constructor(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 300L
     }
-}
-
-internal data class UiState(
-    val searchText: String = "",
-    val products: List<Product> = listOf(),
-    val loadingState: LoadingState = LoadingState.Idle
-)
-
-internal sealed class LoadingState {
-    object Idle : LoadingState()
-    object Loading : LoadingState()
-    data class Error(val message: NativeText) : LoadingState()
-}
-
-private fun UiState.loading(): UiState {
-    return copy(loadingState = LoadingState.Loading)
-}
-
-private fun UiState.loaded(products: List<Product>): UiState {
-    return copy(
-        products = products,
-        loadingState = LoadingState.Idle
-    )
-}
-
-private fun UiState.withError(message: NativeText): UiState {
-    return copy(
-        loadingState = LoadingState.Error(message)
-    )
 }

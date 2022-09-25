@@ -5,6 +5,7 @@ import com.yundin.core.repository.ProductsRepository
 import com.yundin.core.utils.Result
 import com.yundin.core.utils.runBlockCatching
 import com.yundin.datasource.TangoDemoApi
+import com.yundin.datasource.model.toDomain
 import javax.inject.Inject
 
 class ProductsRepositoryImpl @Inject constructor(

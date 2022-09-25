@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.yundin.designsystem.theme
 
 import androidx.compose.ui.graphics.Color

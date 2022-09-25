@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 buildscript {
     ext {
         minSdkVersion = 21
@@ -9,6 +11,26 @@ plugins {
     id 'com.android.application' version '7.2.0' apply false
     id 'com.android.library' version '7.2.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
+    id 'io.gitlab.arturbosch.detekt' version '1.21.0'
+}
+
+tasks.register('detektAll', Detekt) {
+    description = "Runs over whole code base without the starting overhead for each module."
+    parallel = true
+    buildUponDefaultConfig = true
+    setSource(files(projectDir))
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+    include("**/*.kt")
+    include("**/*.kts")
+    exclude("resources/")
+    exclude("build/")
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        txt.enabled = false
+        md.enabled = false
+        sarif.enabled = false
+    }
 }
 
 task clean(type: Delete) {

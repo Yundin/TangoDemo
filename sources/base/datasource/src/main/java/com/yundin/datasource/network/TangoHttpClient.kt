@@ -13,9 +13,13 @@ interface TangoHttpClient {
 
 class TangoHttpClientImpl @Inject constructor() : TangoHttpClient {
 
+    companion object {
+        const val NETWORK_TIMEOUT_SECONDS = 100L
+    }
+
     private val client: OkHttpClient = OkHttpClient.Builder()
-        .connectTimeout(100, TimeUnit.SECONDS)
-        .readTimeout(100, TimeUnit.SECONDS)
+        .connectTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        .readTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS)
         .build()
 
     private val retrofit = Retrofit.Builder()

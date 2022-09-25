@@ -2,7 +2,12 @@ package com.yundin.designsystem
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -35,7 +40,9 @@ fun ProductItem(
         price = price.setScale(2).toPlainString()
     ) {
         SubcomposeAsyncImage(
-            modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f),
             model = imageUrl,
             contentDescription = null
         ) {
@@ -57,7 +64,9 @@ fun ProductItemContent(
     imageSlot: @Composable (ColumnScope) -> Unit
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         elevation = 3.dp
     ) {
         Column {
@@ -93,7 +102,9 @@ private fun ProductPlaceholder() {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            modifier = Modifier.fillMaxWidth(0.8f).aspectRatio(1f),
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .aspectRatio(1f),
             painter = painterResource(id = R.drawable.ic_placeholder_icon),
             contentDescription = null
         )

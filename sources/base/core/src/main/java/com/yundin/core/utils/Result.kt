@@ -22,6 +22,7 @@ inline fun <S, E> Result<S, E>.doOnError(block: (E) -> Unit): Result<S, E> {
     return this
 }
 
+@Suppress("TooGenericExceptionCaught")
 inline fun <S, R> S.runBlockCatching(block: S.() -> R): Result<R, Throwable> {
     return try {
         Result.Success(block())

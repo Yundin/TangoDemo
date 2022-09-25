@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.yundin.core
 
 import com.yundin.core.repository.ProductsRepository

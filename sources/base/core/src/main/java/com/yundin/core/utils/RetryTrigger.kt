@@ -13,6 +13,21 @@ class RetryTrigger {
     }
 }
 
+/**
+ * Restarting upstream whenever [RetryTrigger.retry] is called for [trigger].
+ * From the downstream perspective previous flow continues.
+ *
+ * For example:
+ *
+ * ```
+ * flowOf(0)
+ *    .onStart { emit(1) }
+ *    .retryable(trigger)
+ *    .onStart { emit(2) }
+ *    .collect { print(it) }
+ * ```
+ * On first start prints "210" and after each retry prints "10".
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 fun <T> Flow<T>.retryable(trigger: RetryTrigger): Flow<T> {
     return trigger.retryEvent

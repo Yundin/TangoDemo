@@ -51,16 +51,10 @@ internal class ProductListViewModel @Inject constructor(
 
     private fun handleNewSearchInput(searchText: String): Flow<UiState> {
         return flow {
-            emit(getProducts(searchText))
+            val productsResult = getProducts(searchText)
+            val uiState = getUiForProductsResult(productsResult)
+            emit(uiState)
         }
-            .map { productsResult ->
-                when(productsResult) {
-                    is Result.Success -> uiState.value.loaded(productsResult.result)
-                    is Result.Error -> uiState.value.withError(
-                        NativeText.Resource(R.string.loading_error)
-                    )
-                }
-            }
             .onStart {
                 emit(uiState.value.loading())
             }
@@ -71,6 +65,15 @@ internal class ProductListViewModel @Inject constructor(
             productsRepository.getAllProducts()
         } else {
             productsRepository.searchProduct(searchText)
+        }
+    }
+
+    private fun getUiForProductsResult(result: Result<List<Product>, Throwable>): UiState {
+        return when(result) {
+            is Result.Success -> uiState.value.loaded(result.result)
+            is Result.Error -> uiState.value.withError(
+                NativeText.Resource(R.string.loading_error)
+            )
         }
     }
 

@@ -29,6 +29,7 @@ internal class ProductListViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> = _uiState
     private val productsRetryTrigger = RetryTrigger()
+    private var firstLoadingPassed = false
 
     init {
         observeSearchInput()
@@ -39,19 +40,19 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     fun onRetryClick() {
+        firstLoadingPassed = false
         productsRetryTrigger.retry()
     }
 
     private fun observeSearchInput() {
-        var firstItemPassed = false
         viewModelScope.launch {
             uiState.map { it.searchText }
                 .distinctUntilChanged()
                 .debounce {
-                    if (firstItemPassed) {
+                    if (firstLoadingPassed) {
                         SEARCH_DEBOUNCE_DELAY
                     } else {
-                        firstItemPassed = true
+                        firstLoadingPassed = true
                         0L
                     }
                 }

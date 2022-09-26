@@ -1,6 +1,6 @@
 # Tango products demo application
 
-Allows to view a ploduct list and search for product.
+Overengineered app for skill demonstration that allows to view a product list and search for product.
 
 ## Screenshots
 
@@ -45,12 +45,13 @@ Contains composed UI, ViewModel, dagger component for feature.
 
 ## Code quality tasks
 
-`./gradlew test` -- runs all the unit tests in the project
-`./gradlew detektAll` -- runs detekt checks for the whole project
+`./gradlew test` — runs all the unit tests in the project
+
+`./gradlew detektAll` — runs detekt checks for the whole project
 
 ## Download
 
-[Release APK](https://github.com/Yundin/TangoDemo/releases/tag/1.0.0)
+[Release APK](https://github.com/Yundin/TangoDemo/releases/tag/1.1.0)
 
 ## Author
 

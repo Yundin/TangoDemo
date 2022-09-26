@@ -43,6 +43,11 @@ Kotlin module. Contains keys and parameters for navigation graph.
 
 Contains composed UI, ViewModel, dagger component for feature.
 
+## Code quality tasks
+
+`./gradlew test` -- runs all the unit tests in the project
+`./gradlew detektAll` -- runs detekt checks for the whole project
+
 ## Download
 
 [Release APK](https://github.com/Yundin/TangoDemo/releases/tag/1.0.0)
